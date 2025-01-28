@@ -1,20 +1,42 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Lista de Contratos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <!-- Botão para criar novo contrato -->
+  <ion-button expand="block" (click)="openCreateModal()" color="primary">
+    Criar Novo Contrato
+  </ion-button>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <!-- Lista de contratos -->
+  <ion-list *ngIf="contratos.length > 0; else emptyState">
+    <ion-item
+      *ngFor="let contrato of contratos"
+      (click)="navigateToContrato(contrato.id ? contrato.id : 0)"
+      detail="true"
+    >
+      <ion-label>
+        <h2>ID: {{ contrato.id }}</h2>
+        <p>Número: {{ contrato.numero_contrato }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Estado vazio -->
+  <ng-template #emptyState>
+    <ion-text color="medium" class="ion-text-center">
+      <p>Nenhum contrato encontrado.</p>
+    </ion-text>
+  </ng-template>
+
+  <!-- Spinner de carregamento -->
+  <ion-spinner
+    *ngIf="loading"
+    name="crescent"
+    color="primary"
+    class="ion-margin-top"
+  ></ion-spinner>
 </ion-content>
+
