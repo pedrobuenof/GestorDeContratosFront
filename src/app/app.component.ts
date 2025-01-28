@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 
 @Component({
@@ -6,6 +6,12 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   templateUrl: 'app.component.html',
   imports: [IonApp, IonRouterOutlet],
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  constructor() {
+    console.log("AppComponent criado");
+  }
+
+  ngOnInit() {
+    console.log("AppComponent inicializado");
+  }
 }
