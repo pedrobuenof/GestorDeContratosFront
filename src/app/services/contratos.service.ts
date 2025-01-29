@@ -6,7 +6,7 @@ import { Contrato } from "../models/contrato.model";
 
 @Injectable( { providedIn: 'root' } )
 export class ContratosService {
-  private apiUrl = 'http://localhost:8080/api'
+  private apiUrl = 'http://localhost:8080/api' // Pegar através de uma Variável de Ambiente diretamento do .env
 
   constructor(private http: HttpClient){
     console.log("home criada");
@@ -18,13 +18,17 @@ export class ContratosService {
   }
 
   getAll(): Observable<Contrato[]> {
-    console.log("Buscando os contratos");
+    console.log("Requisição de pegar todos os contratos");
     
     return this.http.get<Contrato[]>(`${this.apiUrl}/buscar`).pipe(catchError(this.handleError));
   }
 
-  getById(id: number): Observable<Contrato> {
-    return this.http.get<Contrato>(`${this.apiUrl}/contratos/${id}`).pipe(catchError(this.handleError));
+  getById(id: string): Observable<Contrato> {
+    console.log(`Buscando contrato específico ID = ${id}`);
+    console.log(typeof id);
+    
+    
+    return this.http.get<Contrato>(`${this.apiUrl}/buscar/${id}`).pipe(catchError(this.handleError));
   }
 
   create(contrato: Contrato): Observable<Contrato> {
