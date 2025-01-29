@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes do Contrato</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="contrato; else err">
+    <h2>Contrato ID: {{ contrato.id }}</h2>
+    <p>Empresa ID: {{ contrato.empresa_id }}</p>
+    <p>Operadora ID: {{ contrato.operadora_id }}</p>
+    <p>Plano ID: {{ contrato.plano_id }}</p>
+    <p>Data de Inicio: {{ contrato.data_inicial }}</p>
+    <p>Data Final: {{ contrato.data_final }}</p>
+    <p>Número do contrato: {{ contrato.numero_contrato }}</p>
+    <p>Status: {{ contrato.status }}</p>
+    <ion-button color="primary" (click)="editContract(contrato.id)">Editar</ion-button>
+    <ion-button color="danger" (click)="deleteContract(contrato.id)">Deletar</ion-button>
+  </div>
+
+  <ng-template #err>
+    <div *ngIf="errorMessage">
+      <p class="error">{{ errorMessage }}</p>
+    </div>
+  </ng-template>
+</ion-content>

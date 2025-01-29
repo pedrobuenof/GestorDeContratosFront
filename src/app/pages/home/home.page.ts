@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { Contrato } from 'src/app/models/contrato.model';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { CriarContratoComponent } from './modals/criar-contrato/criar-contrato.component';
 
 @Component({
   selector: 'app-home',
@@ -31,8 +34,9 @@ export class HomePage implements OnInit {
   errorMessage: string | null = null;
 
   constructor(
-    private contratosService: ContratosService
-    // private modalController: ModalController
+    private contratosService: ContratosService,
+    private router: Router,
+    private modalController: ModalController,
   ) {}
 
   ngOnInit() {
@@ -66,31 +70,18 @@ export class HomePage implements OnInit {
   }
 
   navigateToContrato(id: number) {
-    window.location.href = `/contrato/${id}`;
+    this.router.navigate([`/contrato/${id}`]);
   }
 
   async openCreateModal() {
-    // const modal = await this.modalController.create({
-    //   component: CriarContratoComponent,
-    // });
-    // await modal.present();
-    // modal.onDidDismiss().then(() => this.getContratos());
+    const modal = await this.modalController.create({
+      component: CriarContratoComponent,
+    });
+
+    await modal.present();
+
+    modal.onDidDismiss().then(() => this.getContratos());
     console.log("Criar modal de criar contrato");
     
-  }
-
-  async openEditModal(id: number) {
-    // const modal = await this.modalController.create({
-    //   component: EditarContratoComponent,
-    //   componentProps: { contratoId: id },
-    // });
-    // await modal.present();
-    // modal.onDidDismiss().then(() => this.getContratos());
-    console.log("Criar modal de editar contrato");
-    
-  }
-
-  deleteContrato(id: number) {
-    this.contratosService.delete(id).subscribe(() => this.getContratos());
   }
 }
