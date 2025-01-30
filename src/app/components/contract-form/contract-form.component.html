@@ -1,0 +1,47 @@
+<form [formGroup]="contractForm" (ngSubmit)="submit()">
+  <ion-item>
+    <ion-label position="floating">Número do Contrato</ion-label>
+    <ion-input type="number" formControlName="numero_contrato"></ion-input>
+  </ion-item>
+  <!-- <ion-text color="danger" *ngIf="contractForm.get('numero_contrato').hasError('contratoExistente')">
+    Esse número de contrato já existe.
+  </ion-text> -->
+
+  <ion-item>
+    <ion-label>Status</ion-label>
+    <ion-select formControlName="status">
+      <ion-select-option value="Ativo">Ativo</ion-select-option>
+      <ion-select-option value="Expirado">Expirado</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Data Inicial</ion-label>
+    <ion-datetime formControlName="data_inicial"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Data Final</ion-label>
+    <ion-datetime formControlName="data_final"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Empresa ID</ion-label>
+    <ion-input type="text" formControlName="empresa_id"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Operadora ID</ion-label>
+    <ion-input type="text" formControlName="operadora_id"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Plano ID</ion-label>
+    <ion-input type="text" formControlName="plano_id"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" type="submit" [disabled]="contractForm.invalid">
+    {{ contrato ? 'Atualizar Contrato' : 'Criar Contrato' }}
+  </ion-button>
+</form>
+
