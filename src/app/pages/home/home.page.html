@@ -24,6 +24,9 @@
     </ion-item>
   </ion-list>
 
+  <!-- Modal de Criação de Contrato -->
+  <app-criar-contrato #modalCriarContrato (contractCreated)="onContractCreated()"></app-criar-contrato>
+
   <!-- Estado vazio -->
   <ng-template #emptyState>
     <ion-text color="medium" class="ion-text-center">
@@ -39,4 +42,3 @@
     class="ion-margin-top"
   ></ion-spinner>
 </ion-content>
-

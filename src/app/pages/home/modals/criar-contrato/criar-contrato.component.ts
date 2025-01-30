@@ -1,61 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { IonModal, IonicModule } from '@ionic/angular';
 import { Contrato } from 'src/app/models/contrato.model';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonSpinner, IonText, IonList, IonItem, IonLabel, IonInput, IonNote, IonSelect, IonSelectOption, IonDatetime} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ContractFormComponent } from 'src/app/components/contract-form/contract-form.component';
 
 @Component({
   selector: 'app-criar-contrato',
   templateUrl: './criar-contrato.component.html',
   styleUrls: ['./criar-contrato.component.scss'],
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButton,
-    IonButtons,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonNote,
-    IonSelect,
-    IonSelectOption,
-    IonDatetime,
-    IonSpinner,
-    IonText,
+    IonicModule,
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    ContractFormComponent,
+  ],
+  standalone: true,
 })
 export class CriarContratoComponent  implements OnInit {
-  contrato: Contrato | null = null;
+  @ViewChild(IonModal) modal!: IonModal;
+  @Output() contractCreated: EventEmitter<void> = new EventEmitter<void>();
   errorMessage: string = '';
   loading: boolean = false;
-  contractForm!: FormGroup;
 
-  constructor(private modalController: ModalController, private contratosService:ContratosService) { }
+  constructor(private contratosService:ContratosService) { }
 
   ngOnInit() {}
 
-  closeModal() {
-    this.modalController.dismiss();
+  openModal() {
+    this.modal.present();
   }
 
-  createContract(formData: Contrato) {
+  closeModal() {
+    this.modal.dismiss();
+  }
+
+  saveContract(formData: Contrato) {
     this.loading = true;
+    this.errorMessage = '';
     console.log("Dados do Contrato criado e pronto para ser salvo: ", formData);
+    
+    formData.empresa_id = Number(formData.empresa_id)
+    formData.operadora_id = Number(formData.operadora_id)
+    formData.plano_id = Number(formData.plano_id)
 
     this.contratosService.create(formData).subscribe({
       next: (data) => {
-        if (data) {
-          this.contrato = data
-          console.log("Contrato criado com sucesso: ", this.contrato);
-        }
+        console.log("Contrato criado com sucesso: ", data);
+        this.contractCreated.emit(); 
+        this.closeModal();
       },
       error: (err) => {
         this.errorMessage = 'Error ao criar o contrato. Tente novamente mais tarde.';

@@ -1,34 +1,27 @@
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonList, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { Contrato } from 'src/app/models/contrato.model';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
 import { CriarContratoComponent } from './modals/criar-contrato/criar-contrato.component';
+import { IonicModule } from '@ionic/angular'
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonButton,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonSpinner,
-    IonText,
     HttpClientModule,
     CommonModule,
+    CriarContratoComponent,
+    IonicModule
   ],
   standalone: true
 })
 export class HomePage implements OnInit {
+  @ViewChild(CriarContratoComponent) modalCriarContrato!: CriarContratoComponent;
   contratos: Contrato[] = [];
   loading: boolean = false;
   errorMessage: string | null = null;
@@ -36,7 +29,6 @@ export class HomePage implements OnInit {
   constructor(
     private contratosService: ContratosService,
     private router: Router,
-    private modalController: ModalController,
   ) {}
 
   ngOnInit() {
@@ -73,15 +65,12 @@ export class HomePage implements OnInit {
     this.router.navigate([`/contrato/${id}`]);
   }
 
-  async openCreateModal() {
-    const modal = await this.modalController.create({
-      component: CriarContratoComponent,
-    });
+  openCreateModal() {
+    this.modalCriarContrato.openModal();
+  }
 
-    await modal.present();
-
-    modal.onDidDismiss().then(() => this.getContratos());
-    console.log("Criar modal de criar contrato");
-    
+  onContractCreated() {
+    // Recarregar a lista de contratos quando um novo contrato for criado
+    this.getContratos();
   }
 }
