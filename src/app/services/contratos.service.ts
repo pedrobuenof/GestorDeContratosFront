@@ -32,14 +32,14 @@ export class ContratosService {
   }
 
   create(contrato: Contrato): Observable<Contrato> {
-    return this.http.post<Contrato>(`${this.apiUrl}/criarContratos`, contrato).pipe(catchError(this.handleError));
+    return this.http.post<Contrato>(`${this.apiUrl}/criar`, contrato).pipe(catchError(this.handleError));
   }
 
   update(id: number, contrato: Contrato): Observable<Contrato> {
-    return this.http.put<Contrato>(`${this.apiUrl}/editarContrato/${id}`, contrato).pipe(catchError(this.handleError));
+    return this.http.put<Contrato>(`${this.apiUrl}/editar/${id}`, contrato).pipe(catchError(this.handleError));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/deletarContrato/${id}`).pipe(catchError(this.handleError));
+    return this.http.delete<void>(`${this.apiUrl}/deletar/${id}`).pipe(catchError(this.handleError));
   }
 }
