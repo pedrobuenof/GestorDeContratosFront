@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, inject, Output, EventEmitter} from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Contrato } from 'src/app/models/contrato.model';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonSpinner, IonText, IonList, IonItem, IonLabel, IonInput, IonNote, IonSelect, IonSelectOption, IonDatetime} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 @Component({
   selector: 'app-contract-form',
   templateUrl: './contract-form.component.html',
@@ -10,14 +11,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    IonButton,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonSelect,
-    IonSelectOption,
-    IonDatetime,
-    // IonText,
+    IonicModule,
   ],
   standalone: true,
 })
