@@ -14,9 +14,11 @@
     <p>Data Final: {{ contrato.data_final }}</p>
     <p>Número do contrato: {{ contrato.numero_contrato }}</p>
     <p>Status: {{ contrato.status }}</p>
-    <ion-button color="primary" (click)="editContract(contrato.id)">Editar</ion-button>
+    <ion-button color="primary" (click)="openEditModal(contrato)">Editar</ion-button>
     <ion-button color="danger" (click)="deleteContract(contrato.id)">Deletar</ion-button>
   </div>
+
+  <app-contract-modal #modalEditarContrato (submitForm)="saveEdit($event)"></app-contract-modal>
 
   <ng-template #err>
     <div *ngIf="errorMessage">

@@ -1,28 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Contrato } from 'src/app/models/contrato.model';
 import { ContratosService } from 'src/app/services/contratos.service';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular'
+import { ContractModalComponent } from 'src/app/components/contract-modal/contract-modal.component';
 
 @Component({
   selector: 'app-contrato',
   templateUrl: './contrato.page.html',
   styleUrls: ['./contrato.page.scss'],
   imports: [
-      IonHeader,
-      IonToolbar,
-      IonTitle,
-      IonContent,
-      IonButton,
-      IonSpinner,
-      IonText,
+      IonicModule,
       CommonModule,
+      ContractModalComponent,
     ],
 })
 export class ContratoPage  implements OnInit {
-  contrato: Contrato | null = null;
-  idContrato: string | null = null;
+  @ViewChild(ContractModalComponent) modalEditarContrato!: ContractModalComponent;
+
+  contrato!: Contrato;
+  idContrato!: number;
+
   errorMessage: string = '';
   loading: boolean = false;
 
@@ -39,15 +38,8 @@ export class ContratoPage  implements OnInit {
   
   getContratById() {
     this.loading=true;
-    this.idContrato = this.route.snapshot.paramMap.get('id');
+    this.idContrato = Number(this.route.snapshot.paramMap.get('id'));
     console.log('ID do contrato: ', this.idContrato);
-  
-    if (!this.idContrato) {
-      console.log("Não tinha id");
-      this.errorMessage = "Nenhum ID passado";
-      this.loading = false;
-      return
-    }
   
     this.contratoService.getById(this.idContrato).subscribe({
       next: (data) => {
@@ -69,23 +61,25 @@ export class ContratoPage  implements OnInit {
       },
     })
   }
-  // async openEditModal(id: number) {
-  //   // const modal = await this.modalController.create({
-  //   //   component: EditarContratoComponent,
-  //   //   componentProps: { contratoId: id },
-  //   // });
-  //   // await modal.present();
-  //   // modal.onDidDismiss().then(() => this.getContratos());
-  //   console.log("Criar modal de editar contrato");
-    
-  // }
+
+  openEditModal(contrato: Contrato) {
+    this.modalEditarContrato.contrato = contrato;
+    this.modalEditarContrato.openModal();
+  }
 
   // deleteContrato(id: number) {
   //   this.contratosService.delete(id).subscribe(() => this.getContratos());
   // }
-  editContract(id?: number) {
-    console.log("Editar contrato: ", id);
-    
+
+  saveEdit(formData: Contrato) {
+    if (!this.idContrato) {
+      console.log("Deu Error em salvar a edição por algum motivo com o ID");
+      return
+    }
+
+    this.contratoService.update(this.idContrato, formData).subscribe(() => {
+      this.getContratById()
+    })
   }
 
   deleteContract(id?: number) {
