@@ -2,15 +2,18 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Criar Contrato</ion-title>
+        <ion-title>{{ contrato ? 'Editar Contrato' : 'Criar Contrato' }}</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="closeModal()">Fechar</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-
+  
     <ion-content>
-      <app-contract-form (submitForm)="saveContract($event)"></app-contract-form>
+      <app-contract-form
+        [contrato]="contrato"
+        (submitForm)="onSubmit($event)">
+      </app-contract-form>
     </ion-content>
   </ng-template>
 </ion-modal>
