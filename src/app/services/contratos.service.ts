@@ -23,7 +23,7 @@ export class ContratosService {
     return this.http.get<Contrato[]>(`${this.apiUrl}/buscar`).pipe(catchError(this.handleError));
   }
 
-  getById(id: string): Observable<Contrato> {
+  getById(id: number): Observable<Contrato> {
     console.log(`Buscando contrato específico ID = ${id}`);
     console.log(typeof id);
     
