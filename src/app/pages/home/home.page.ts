@@ -1,11 +1,10 @@
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonList, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { Contrato } from 'src/app/models/contrato.model';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { CriarContratoComponent } from './modals/criar-contrato/criar-contrato.component';
+import { ContractModalComponent } from 'src/app/components/contract-modal/contract-modal.component';
 import { IonicModule } from '@ionic/angular'
 
 @Component({
@@ -15,14 +14,15 @@ import { IonicModule } from '@ionic/angular'
   imports: [
     HttpClientModule,
     CommonModule,
-    CriarContratoComponent,
+    ContractModalComponent,
     IonicModule
   ],
   standalone: true
 })
 export class HomePage implements OnInit {
-  @ViewChild(CriarContratoComponent) modalCriarContrato!: CriarContratoComponent;
+  @ViewChild(ContractModalComponent) modalCriarContrato!: ContractModalComponent;
   contratos: Contrato[] = [];
+
   loading: boolean = false;
   errorMessage: string | null = null;
 
@@ -69,8 +69,27 @@ export class HomePage implements OnInit {
     this.modalCriarContrato.openModal();
   }
 
-  onContractCreated() {
-    // Recarregar a lista de contratos quando um novo contrato for criado
-    this.getContratos();
+  saveContract(formData: Contrato) {
+    this.loading = true;
+    this.errorMessage = '';
+    console.log("Dados do Contrato criado e pronto para ser salvo: ", formData);
+    
+    formData.empresa_id = Number(formData.empresa_id)
+    formData.operadora_id = Number(formData.operadora_id)
+    formData.plano_id = Number(formData.plano_id)
+
+    this.contratosService.create(formData).subscribe({
+      next: (data) => {
+        console.log("Contrato criado com sucesso: ", data);
+        this.getContratos();
+      },
+      error: (err) => {
+        this.errorMessage = 'Error ao criar o contrato. Tente novamente mais tarde.';
+        console.error("Erro ao criar o contrato", err);
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    })
   }
 }

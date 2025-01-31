@@ -25,7 +25,7 @@
   </ion-list>
 
   <!-- Modal de Criação de Contrato -->
-  <app-criar-contrato #modalCriarContrato (contractCreated)="onContractCreated()"></app-criar-contrato>
+  <app-contract-modal #modalCriarContrato (submitForm)="saveContract($event)"></app-contract-modal>
 
   <!-- Estado vazio -->
   <ng-template #emptyState>
