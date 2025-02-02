@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Contrato } from 'src/app/models/contrato.model';
 import { ContratosService } from 'src/app/services/contratos.service';
 import { CommonModule } from '@angular/common';
@@ -25,7 +25,11 @@ export class ContratoPage  implements OnInit {
   errorMessage: string = '';
   loading: boolean = false;
 
-  constructor(private route: ActivatedRoute, private contratoService: ContratosService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private contratoService: ContratosService
+  ) { }
 
   ngOnInit() {
     console.log("Contrato page inicializado");
@@ -82,7 +86,11 @@ export class ContratoPage  implements OnInit {
     })
   }
 
-  deleteContract(id?: number) {
-    console.log("Deletar contrato: ", id);
+  deleteContract(id: number) {
+    this.contratoService.delete(id).subscribe(() => {
+      this.router.navigate(['/home']).then(() => {
+        window.location.reload();
+      });
+    })
   }
 }

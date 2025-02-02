@@ -1,10 +1,14 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Detalhes do Contrato</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
   <div *ngIf="contrato; else err">
     <h2>Contrato ID: {{ contrato.id }}</h2>
     <p>Empresa ID: {{ contrato.empresa_id }}</p>
@@ -15,7 +19,9 @@
     <p>Número do contrato: {{ contrato.numero_contrato }}</p>
     <p>Status: {{ contrato.status }}</p>
     <ion-button color="primary" (click)="openEditModal(contrato)">Editar</ion-button>
-    <ion-button color="danger" (click)="deleteContract(contrato.id)">Deletar</ion-button>
+    <div *ngIf="contrato.id">
+      <ion-button color="danger" (click)="deleteContract(contrato.id)">Deletar</ion-button>
+    </div>
   </div>
 
   <app-contract-modal #modalEditarContrato (submitForm)="saveEdit($event)"></app-contract-modal>
